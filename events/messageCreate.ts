@@ -9,7 +9,7 @@ async function cleanDiscordMessageContent(messageContent:any) {
     return messageContent.trim();
 }
 
-module.exports = async(client : any, message : any, chatClient : any) => {
+module.exports = async(client : any, message : any, chatClient : any,characterName:string) => {
     if (message.author.bot || !message.content) {
         return;
     };
@@ -22,8 +22,9 @@ module.exports = async(client : any, message : any, chatClient : any) => {
         if(!chatClient){
             return;
         };
+        message.member.setNickname(`Talking to: ${characterName}`);
         await message.channel.permissionOverwrites.edit(message.channel.guild.roles.everyone, { SendMessages: false });
-        const response = await chatClient.sendAndAwaitResponse(`${msgContent}`, true);
+        const response = await chatClient.sendAndAwaitResponse(`${message.author.username} said ${msgContent}`, true);
         await message.channel.send(`${response.text}`);
         await message.channel.permissionOverwrites.edit(message.channel.guild.roles.everyone, { SendMessages: true });
 
