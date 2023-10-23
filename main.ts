@@ -22,7 +22,7 @@ const connectCai =async()=>{
         chatClient = await characterAI.createOrContinueChat(process.env.CHARACTER_ID);
         let characterinfo = await characterAI.fetchCharacterInfo(process.env.CHARACTER_ID);
         characterName= characterinfo.name;
-        client.user.setPresence({
+        await client.user.setPresence({
             activities: [{ name: `${characterinfo.name}`, type: ActivityType.Playing }],
         });
         for (const file of eventFiles) {

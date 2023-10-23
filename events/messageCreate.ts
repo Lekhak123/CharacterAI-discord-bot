@@ -1,4 +1,4 @@
-
+const { PermissionsBitField } = require('discord.js');
 
 async function cleanDiscordMessageContent(messageContent:any) {
     messageContent = messageContent.replace(/<@!?\d+>/g, '');
@@ -23,12 +23,14 @@ module.exports = async(client : any, message : any, chatClient : any,characterNa
             return;
         };
         try {
-            message.member.setNickname(`Talking to: ${characterName}`);
+            if(!message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags.KickMembers)){
+                message?.member?.setNickname(`Talking to: ${characterName}`);
+            }
         } catch (error) {
             console.log(error);
         };
         await message.channel.permissionOverwrites.edit(message.channel.guild.roles.everyone, { SendMessages: false });
-        const response = await chatClient.sendAndAwaitResponse(`${message.author.username} said ${msgContent}`, true);
+        const response = await chatClient.sendAndAwaitResponse(`${msgContent}`, true);
         await message.channel.send(`${response.text}`);
         await message.channel.permissionOverwrites.edit(message.channel.guild.roles.everyone, { SendMessages: true });
 
