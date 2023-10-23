@@ -1,0 +1,7 @@
+{
+    "exec": "ts-node -r tsconfig-paths/register",
+    "watch": ["./"],
+    "ext": "ts",
+    "ignore": ["node_modules/*",".env"],
+    "delay": "1000"
+}
