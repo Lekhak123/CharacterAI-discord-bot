@@ -22,7 +22,11 @@ module.exports = async(client : any, message : any, chatClient : any,characterNa
         if(!chatClient){
             return;
         };
-        message.member.setNickname(`Talking to: ${characterName}`);
+        try {
+            message.member.setNickname(`Talking to: ${characterName}`);
+        } catch (error) {
+            console.log(error);
+        };
         await message.channel.permissionOverwrites.edit(message.channel.guild.roles.everyone, { SendMessages: false });
         const response = await chatClient.sendAndAwaitResponse(`${message.author.username} said ${msgContent}`, true);
         await message.channel.send(`${response.text}`);
